@@ -1,0 +1,40 @@
+main.profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 510px;
+
+  form {
+    width: 100%;
+    margin-bottom: 20px;
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #EAEAEA;
+      height: 30px;
+    ;
+    }
+  }
+
+  .input-container {
+    border: none;
+    margin-bottom: 0;
+
+    input {
+      text-align: right;
+    }
+  }
+
+  .links {
+    display: flex;
+    flex-direction: column;
+    align-self: self-start;
+    text-align: start;
+
+    .logout {
+      color: crimson;
+    }
+  }
+}
