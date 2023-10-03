@@ -3,7 +3,7 @@
 
 An ordinary messenger no different from others. just take and use it
 
-#### [--Beta version--]
+#### [-**Beta-version**-]
 
 ### Created with
 

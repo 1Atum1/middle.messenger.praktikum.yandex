@@ -5,7 +5,7 @@ export const tmpl = `
         {{#each profileDataForm as |data|}}
             <div class="row">
                 {{data.inputText}}
-                {{> input inputText=data.text placeholder=data.placeholder type=data.type disabled=data.disabled }}
+                {{> input inputText='' placeholder=data.placeholder type=data.type disabled=data.disabled }}
             </div>
         {{/each}}
         </form>

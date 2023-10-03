@@ -1,3 +1,5 @@
+@import "./src/shared/styles/variables";
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -6,11 +8,11 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: $light-blue;
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: $dark-blue;
 }
 
 body {
@@ -30,13 +32,13 @@ body {
 
 .input-container {
   width: 280px;
-  border-bottom: 1px solid #3369F3;
+  border-bottom: 1px solid $blue;
   margin-bottom: 10px;
 
   label {
     display: flex;
     font-size: 9px;
-    color: #999999;
+    color: $gray;
   }
 
   input {
@@ -61,15 +63,15 @@ body {
   height: 37px;
   border: none;
   border-radius: 8px;
-  background: #3369F3;
-  color: #fff;
+  background: $blue;
+  color: $white;
   cursor: pointer;
   margin-bottom: 5px;
 }
 
 .to-reg,
 .to-auth {
-  color: #3369F3;
+  color: $blue;
   font-size: 11px;
   cursor: pointer;
 }

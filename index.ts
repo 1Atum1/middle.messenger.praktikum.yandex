@@ -10,11 +10,12 @@ import './src/shared/styles/profile.scss'
 import './style.scss'
 
 import {editProfileDataForm, profileDataForm} from "./src/shared/constants/profile-data-form";
+import {authForm, regForm} from "./src/shared/constants/auth_reg-data-form";
 
 const ROUTES: Record<string, string> = {
-    '/': Authorization()({}),
-    '/authorization': Authorization()({}),
-    '/registration': Registration()({}),
+    '/': Authorization()({authForm}),
+    '/authorization': Authorization()({authForm}),
+    '/registration': Registration()({regForm}),
     '/profile': Profile()({profileDataForm}),
     '/profile/edit': EditProfile()({editProfileDataForm}),
     '/change-password': ChangePassword()({}),

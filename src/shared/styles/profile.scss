@@ -1,3 +1,5 @@
+@import "./variables";
+
 main.profile {
   display: flex;
   flex-direction: column;
@@ -12,7 +14,7 @@ main.profile {
     .row {
       display: flex;
       justify-content: space-between;
-      border-bottom: 1px solid #EAEAEA;
+      border-bottom: 1px solid $light-gray-white;
       height: 30px;
     ;
     }

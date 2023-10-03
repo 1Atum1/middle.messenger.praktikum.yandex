@@ -3,8 +3,13 @@ export const tmpl =
         <h2>Authorization</h2>
         <form>
             <div class="input-wrapper">
-                {{> input inputText='Login' placeholder='Enter login' type='text'}}
-                {{> input inputText='Password' placeholder='Enter password' type='password'}}
+                {{#each authForm as |data|}}
+                    {{> input 
+                        inputText=data.inputText
+                        placeholder=data.placeholder
+                        type=data.type
+                        nameAttr=data.nameAttr}}
+                {{/each}}
             </div>
             {{> button text='Login'}}
         </form>

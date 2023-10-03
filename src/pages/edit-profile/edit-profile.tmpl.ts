@@ -5,7 +5,12 @@ export const tmpl = `
         {{#each editProfileDataForm as |data|}}
             <div class="row">
                 {{data.inputText}}
-                {{> input inputText=data.text placeholder=data.placeholder type=data.type disabled=data.disabled }}
+                    {{> input
+                        inputText=''
+                        placeholder=data.placeholder
+                        type=data.type
+                        disabled=data.disabled
+                        nameAttr=data.nameAttr }}
             </div>
         {{/each}}
         </form>
