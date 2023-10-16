@@ -1,0 +1,77 @@
+@import "./src/shared/styles/variables";
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+a {
+  font-weight: 500;
+  color: $light-blue;
+  text-decoration: inherit;
+}
+a:hover {
+  color: $dark-blue;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.input-container {
+  width: 280px;
+  border-bottom: 1px solid $blue;
+  margin-bottom: 10px;
+
+  label {
+    display: flex;
+    font-size: 9px;
+    color: $gray;
+  }
+
+  input {
+    width: 100%;
+    border: none;
+    background-color: inherit;
+
+    &:focus-visible,
+    &:focus {
+      border: none;
+      outline: none;
+    }
+
+    &::placeholder {
+      opacity: 0.3;
+    }
+  }
+}
+
+.btn {
+  width: 280px;
+  height: 37px;
+  border: none;
+  border-radius: 8px;
+  background: $blue;
+  color: $white;
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+
+.to-reg,
+.to-auth {
+  color: $blue;
+  font-size: 11px;
+  cursor: pointer;
+}

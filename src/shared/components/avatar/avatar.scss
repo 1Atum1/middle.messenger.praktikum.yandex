@@ -1,0 +1,22 @@
+.avatar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 130px;
+  height: 170px;
+  margin-bottom: 50px;
+
+  img {
+    object-fit: cover;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background-color: gray;
+  }
+
+  p {
+    font-size: 20px;
+    margin: 0;
+  }
+}

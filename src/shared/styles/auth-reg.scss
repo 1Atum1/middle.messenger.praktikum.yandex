@@ -1,0 +1,32 @@
+@import "./variables";
+
+main.auth-reg {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  width: 340px;
+  border: solid $white;
+  box-shadow: 0 0 6px 0 #00000024;
+  border-radius: 6px;
+
+  &.auth-form {
+    height: 450px;
+  }
+
+  &.reg-form {
+    height: 615px;
+
+    & .input-wrapper {
+      margin-bottom: 45px;
+    }
+  }
+
+  h2 {
+    margin: 40px 0 70px 0;
+  }
+
+  .input-wrapper {
+    margin-bottom: 120px;
+  }
+}
