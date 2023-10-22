@@ -1,36 +1,20 @@
 export const tmpl = `
     <main class="profile">
-    {{> avatar avatarSrc='../public/vite.svg' name=''}}
+    {{{avatar}}}
     <form>
         <div class="row">
             Old password
-            {{> input 
-                inputText=''
-                placeholder='Enter password'
-                type='password'
-                disabled=false
-                nameAttr='oldPassword'}}
+            {{{input0}}}
         </div>
         <div class="row">
             New password
-            {{> input 
-                inputText='' 
-                placeholder='Enter password'
-                type='password'
-                disabled=false
-                nameAttr='newPassword'}}
+            {{{input1}}}
         </div>
         <div class="row">
             Confirm password
-            {{> input 
-                inputText=''
-                placeholder='Enter password'
-                type='password'
-                disabled=false}}
+            {{{input2}}}
         </div>
     </form>
-    <a href="/profile">
-        {{> button text='Save'}}
-    </a>
+    <a href="/profile">{{{button}}}</a>
     </main>
 `

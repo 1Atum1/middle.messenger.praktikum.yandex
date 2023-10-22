@@ -1,6 +1,8 @@
 export const tmpl = `
-     <div class="input-container">
-         <label>{{inputText}}</label>
-         <input name="{{nameAttr}}" {{#if disabled}} disabled {{/if}} type="{{type}}" placeholder="{{placeholder}}">
-     </div>
+     <label>{{inputText}}</label>
+     <input name="{{nameAttr}}" {{#if disabled}} disabled {{/if}} type="{{type}}" placeholder="{{placeholder}}">
+     {{errors}}
+     {{#if errors.length}} 
+        <span id="validationMessage">{{errors}}</span>
+     {{/if}}
 `;
