@@ -14,12 +14,14 @@
     "@typescript-eslint/eslint-plugin": "^6.9.0",
     "@typescript-eslint/parser": "^6.9.0",
     "eslint": "^8.52.0",
+    "prettier": "^2.5.1",
     "sass": "^1.68.0",
+    "typescript": "^5.0.2",
     "vite": "^4.4.5",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-handlebars": "^1.6.0",
-    "prettier": "^2.5.1",
-    "typescript": "^5.0.2"
+    "vite-plugin-stylelint": "^5.2.0",
+    "stylelint": "^15.11.0"
   },
   "dependencies": {
     "express": "^4.18.2",
