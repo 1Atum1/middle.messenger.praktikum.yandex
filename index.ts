@@ -12,7 +12,6 @@ import './src/pages/chat-list/chat-list.scss'
 import './style.scss'
 import {Block} from "./src/shared/utils/block";
 
-// @ts-ignore
 const ROUTES: Record<string, Block> = {
     '/': new Authorization(),
     '/authorization': new Authorization(),
