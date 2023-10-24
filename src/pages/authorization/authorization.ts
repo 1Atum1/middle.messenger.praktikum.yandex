@@ -3,7 +3,7 @@ import {Button} from "../../shared/components/button/button.ts";
 import {Block} from "../../shared/utils/block.ts";
 import {authForm} from "../../shared/constants/auth_reg-data-form.ts";
 import {onBlur} from "../../shared/utils/validation.ts";
-import {getFormValues} from "../../shared/utils/get-form-values.ts";
+import {getAuthFormValues} from "../../shared/utils/get-form-values.ts";
 
 export class Authorization extends Block {
 
@@ -15,7 +15,7 @@ export class Authorization extends Block {
         this.children.button = new Button({
             label: 'Login',
             cssClassName: 'btn',
-            events: { click: (event: Event) => getFormValues(event) }
+            events: { click: () => getAuthFormValues() }
         });
 
         this.props.inputs = authForm;
@@ -39,7 +39,7 @@ export class Authorization extends Block {
         return this.compile(
             `<main class="auth-reg auth-form">
         <h2>{{title}}</h2>
-        <div>
+        <div class="form">
             <div class="input-wrapper">
                 <div class="input-container">
                     {{{inputs}}}
