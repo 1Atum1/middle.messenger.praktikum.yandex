@@ -3,6 +3,7 @@ import {Block} from "../../shared/utils/block.ts";
 import {Avatar} from "../../shared/components/avatar/avatar.ts";
 import {Button} from "../../shared/components/button/button.ts";
 import {Input} from "../../shared/components/input/input.ts";
+import {IInput} from "../../shared/interfaces/input.interface.ts";
 
 export const changePasswordInputs = [
     { inputText: '', placeholder: 'Enter password', type: 'password', disabled: false },
@@ -29,7 +30,7 @@ export class ChangePassword extends Block {
             events: { click: () => console.log('test') }
         });
 
-        changePasswordInputs.forEach((v: any, index: number) => {
+        changePasswordInputs.forEach((v: IInput, index: number) => {
                 this.children[`input${index}`] = new Input({
                     inputText: v.inputText,
                     placeholder: v.placeholder,

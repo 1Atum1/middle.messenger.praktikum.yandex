@@ -1,20 +1,8 @@
 import {tmpl} from './input.tmpl.ts'
 import {Block} from "../../utils/block.ts";
 
-export interface IInput {
-    inputText: string,
-    cssClassName?: string,
-    nameAttr: string,
-    disabled?: boolean,
-    type?: string,
-    placeholder?: string,
-    events?: {
-        blur: () => void
-    }
-}
-
 export class Input extends Block {
-    constructor(props: any) {
+    constructor(props: unknown) {
         // Создаём враппер дом-элемент button
         super("div", props);
     }

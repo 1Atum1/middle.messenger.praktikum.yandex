@@ -1,4 +1,4 @@
-import {Input} from "../../shared/components/input/input.ts";
+import {IInput, Input} from "../../shared/components/input/input.ts";
 import {Button} from "../../shared/components/button/button.ts";
 import {Block} from "../../shared/utils/block.ts";
 import {authForm} from "../../shared/constants/auth_reg-data-form.ts";
@@ -19,7 +19,7 @@ export class Authorization extends Block {
         });
 
         this.props.inputs = authForm;
-        this.children.inputs = this.props.inputs.map((v: any, index: number) => {
+        this.children.inputs = this.props.inputs.map((v: IInput, index: number) => {
                 return new Input({
                     inputText: v.inputText,
                     placeholder: v.placeholder,
@@ -27,7 +27,7 @@ export class Authorization extends Block {
                     nameAttr: v.nameAttr,
                     errors: '',
                     required: v.required,
-                    events: { 'blur': (event: any) => {
+                    events: { 'blur': (event: Event) => {
                             return onBlur(v, event, index, this)}
                     }
                 })

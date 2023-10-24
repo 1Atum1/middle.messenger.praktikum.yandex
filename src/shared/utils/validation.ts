@@ -1,4 +1,6 @@
-export function onBlur (v: any, event: any, index: number, parent: any) {
+import {IInput} from "../interfaces/input.interface.ts";
+
+export function onBlur (v: IInput, event: Event | unknown, index: number, parent: unknown) {
     const errorsNode = event.target.parentNode.querySelector('.errors') as HTMLElement;
     let regex: RegExp;
 
@@ -18,7 +20,7 @@ export function onBlur (v: any, event: any, index: number, parent: any) {
 
     if (v.nameAttr === 'first_name' || v.nameAttr === 'second_name') {
         console.log(1);
-        regex = /^[A-ZА-ЯЁ][a-zA-ZА-ЯЁ\-]*$/
+        regex = /^[A-ZА-ЯЁ][a-zA-ZА-ЯЁ]*$/
     }
 
     if (v.nameAttr === 'email') {
@@ -33,7 +35,7 @@ export function onBlur (v: any, event: any, index: number, parent: any) {
         regex = /^.*\S.*$/;
     }
 
-    // @ts-ignore
+
     if (regex.test(event.target.value)) {
         errorsNode.textContent = '';
     } else {

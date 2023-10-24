@@ -10,7 +10,7 @@ export interface IButton {
 }
 
 export class Button extends Block {
-    constructor(props: any) {
+    constructor(props: unknown) {
         // Создаём враппер дом-элемент button
         super("button", props);
     }

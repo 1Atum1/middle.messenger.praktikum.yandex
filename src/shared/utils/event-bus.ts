@@ -1,10 +1,10 @@
 export class EventBus {
-    private listeners: Record<string, any>;
+    private listeners: Record<string, unknown>;
     constructor() {
         this.listeners = {};
     }
 
-    on(event: string | number, callback: any) {
+    on(event: string | number, callback: unknown) {
         if (!this.listeners[event]) {
             this.listeners[event] = [];
         }
@@ -12,22 +12,22 @@ export class EventBus {
         this.listeners[event].push(callback);
     }
 
-    off(event: string | number, callback: any) {
+    off(event: string | number, callback: unknown) {
         if (!this.listeners[event]) {
             throw new Error(`Нет события: ${event}`);
         }
 
         this.listeners[event] = this.listeners[event].filter(
-            (listener: any) => listener !== callback
+            (listener: unknown) => listener !== callback
         );
     }
 
-    emit(event: string, ...args: any[]) {
+    emit(event: string, ...args: unknown[]) {
         if (!this.listeners[event]) {
             throw new Error(`Нет события: ${event}`);
         }
 
-        this.listeners[event].forEach(function(listener: any) {
+        this.listeners[event].forEach(function(listener: unknown): void {
             listener(...args);
         });
     }

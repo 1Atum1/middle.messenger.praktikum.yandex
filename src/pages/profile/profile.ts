@@ -2,6 +2,7 @@ import {Avatar} from "../../shared/components/avatar/avatar.ts";
 import {Block} from "../../shared/utils/block.ts";
 import {profileDataForm} from "../../shared/constants/profile-data-form.ts";
 import {Input} from "../../shared/components/input/input.ts";
+import {IInput} from "../../shared/interfaces/input.interface.ts";
 
 export class Profile extends Block {
 
@@ -16,7 +17,7 @@ export class Profile extends Block {
             events: { click: () => console.log(12) }
         });
 
-        profileDataForm.forEach((v: any, index: number) => {
+        profileDataForm.forEach((v: IInput, index: number) => {
                 this.children[`input${index}`] = new Input({
                     inputText: v.inputText,
                     placeholder: v.placeholder,

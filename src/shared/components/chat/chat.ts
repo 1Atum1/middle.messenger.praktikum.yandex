@@ -2,6 +2,7 @@ import {tmpl} from "./chat.tmpl.ts";
 import {Block} from "../../utils/block.ts";
 import {Input} from "../input/input.ts";
 import {onBlur} from "../../utils/validation.ts";
+import {IInput} from "../../interfaces/input.interface.ts";
 
 export const chatMessages = [
     {inputText: '', nameAttr: 'message', type: 'text', placeholder: '..you will type here', required: false,}
@@ -15,7 +16,7 @@ export class Chat extends Block {
 
     init() {
         this.props.inputs = chatMessages;
-        this.children.inputs = this.props.inputs.map((v: any, index: number) => {
+        this.children.inputs = this.props.inputs.map((v: IInput, index: number) => {
             return new Input({
                 inputText: v.inputText,
                 placeholder: v.placeholder,
@@ -23,7 +24,7 @@ export class Chat extends Block {
                 nameAttr: v.nameAttr,
                 errors: '',
                 required: v.required,
-                events: { 'blur': (event: any) => {
+                events: { 'blur': (event: Event) => {
                         return onBlur(v, event, index, this)}
                 }
         })

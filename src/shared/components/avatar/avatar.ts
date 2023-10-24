@@ -14,7 +14,6 @@ export class Avatar extends Block {
 
     constructor(props: IAvatar) {
         // Создаём враппер дом-элемент button
-        // @ts-ignore
         super("div", props);
     }
 

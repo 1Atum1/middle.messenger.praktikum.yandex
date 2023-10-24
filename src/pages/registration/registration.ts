@@ -6,6 +6,7 @@ import {regForm} from "../../shared/constants/auth_reg-data-form.ts";
 import {onBlur} from "../../shared/utils/validation.ts";
 import {tmpl} from "./registration.tmpl.ts";
 import {getRegFormValues} from "../../shared/utils/get-form-values.ts";
+import {IInput} from "../../shared/interfaces/input.interface.ts";
 
 export class Registration extends Block {
 
@@ -21,7 +22,7 @@ export class Registration extends Block {
         });
 
         this.props.inputs = regForm;
-        this.children.inputs = this.props.inputs.map((v: any, index: number) => {
+        this.children.inputs = this.props.inputs.map((v: IInput, index: number) => {
                 return new Input({
                     inputText: v.inputText,
                     placeholder: v.placeholder,
@@ -29,7 +30,7 @@ export class Registration extends Block {
                     nameAttr: v.nameAttr,
                     errors: '',
                     required: v.required,
-                    events: { 'blur': (event: any) => {
+                    events: { 'blur': (event: Event) => {
                             return onBlur(v, event, index, this)}
                     }
                 })

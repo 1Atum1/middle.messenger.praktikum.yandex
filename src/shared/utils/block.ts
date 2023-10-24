@@ -16,7 +16,7 @@ export class Block {
 
     _element = null as unknown as HTMLElement;
     _meta = null as unknown;
-    protected props: any;
+    protected props: Record<string, unknown>;
     public children: Record<string, Block | Block[]>
     private eventBus: () => EventBus;
 
@@ -25,7 +25,7 @@ export class Block {
      * @param propsWithChildren
      * @param tagNameClass
      */
-    constructor(tagName: string = "div", propsWithChildren: any, tagNameClass = '', ) {
+    constructor(tagName: string = "div", propsWithChildren: unknown, tagNameClass = '', ) {
         const eventBus = new EventBus();
         const { props, children } = this._getChildrenAndProps(propsWithChildren)
         this._meta = {
@@ -45,10 +45,10 @@ export class Block {
         eventBus.emit(Block.EVENTS.INIT);
     }
 
-    _getChildrenAndProps(childrenAndProps: any) {
+    _getChildrenAndProps(childrenAndProps: unknown) {
         // console.log(childrenAndProps);
-        let props: Record<string, unknown> = {}; // Инициализируем props как пустой объект
-        let children: Record<string, Block | Block[]> = {}; // Инициализируем children как пустой объект
+        const props: Record<string, unknown> = {}; // Инициализируем props как пустой объект
+        const children: Record<string, Block | Block[]> = {}; // Инициализируем children как пустой объект
 
         Object.entries(childrenAndProps).forEach(([key, value]) => {
             if (value instanceof Block) {
@@ -62,24 +62,24 @@ export class Block {
     }
 
     _addEvents() {
-        const events = this.props.events as {events: Record<string, () => {}>};
+        const events = this.props.events as {events: Record<string, () => void>};
 
         if (events) {
             Object.keys(events).forEach(eName => {
                 let myElement;
-                for (const child of this._element?.children) {
+                for (const child of this._element.children) {
                     if (child.tagName === 'INPUT' || child.tagName === 'BUTTON') {
                         myElement = child
                     }
                 }
-                // @ts-ignore
+
                 myElement?.addEventListener(eName, events[eName]);
             })
         }
 
     }
 
-    _registerEvents(eventBus: any) {
+    _registerEvents(eventBus: EventBus) {
         eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
@@ -87,7 +87,6 @@ export class Block {
     }
 
     _createResources() {
-        // @ts-ignore
         const { tagName } = this._meta;
         this._element = this._createDocumentElement(tagName);
     }
@@ -139,7 +138,7 @@ export class Block {
         return true;
     }
 
-    setProps = (nextProps: any) => {
+    setProps = (nextProps: Record<string, unknown>) => {
         if (!nextProps) {
             return;
         }
@@ -171,7 +170,7 @@ export class Block {
         return this.element;
     }
 
-    _makePropsProxy(props: any) {
+    _makePropsProxy(props: Record<string, unknown>) {
         // Можно и так передать this
         // Такой способ больше не применяется с приходом ES6+
         const self = this;
@@ -194,12 +193,12 @@ export class Block {
         return props;
     }
 
-    _createDocumentElement(tagName: any) {
+    _createDocumentElement(tagName: string) {
         // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
         return document.createElement(tagName);
     }
 
-    protected compile(template: string, context: any) {
+    protected compile(template: string, context: Record<string, unknown>) {
         const contextAndStubs = { ...context };
 
         // Обработка дочерних компонентов
@@ -224,7 +223,7 @@ export class Block {
         temp.innerHTML = compiledTemplate;
 
         // Заменяем стабы на компоненты
-        for (const [_, components] of Object.entries(this.children)) {
+        for (const [ components] of Object.entries(this.children)) {
             if (Array.isArray(components)) {
                 components.forEach((component) => {
                     const stabs = temp.content.querySelectorAll(`[data-id="${component.id}"]`);

@@ -9,6 +9,7 @@ export interface Options {
     headers: unknown;
     data: unknown;
     timeout: number;
+    method: string;
 }
 
 /**
@@ -33,7 +34,7 @@ function queryStringify(data: unknown) {
         if (index === 0) {
             result += '?'
         }
-        result += `${key}=${Array.isArray((data as any)[key]) ? arrToStr((data as any)[key]) : String((data as any)[key])}${index === Object.keys(data).length - 1 ? '' : '&'}`;
+        result += `${key}=${Array.isArray(data[key]) ? arrToStr(data[key]) : String(data[key])}${index === Object.keys(data).length - 1 ? '' : '&'}`;
     });
 
 
@@ -66,7 +67,7 @@ export class HTTPTransport {
     // options:
     // headers — obj
     // data — obj
-    request = (url: string, options: any, timeout: number = 5000) => {
+    request = (url: string, options: Options, timeout: number = 5000) => {
         const {method, data} = options;
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
@@ -97,12 +98,9 @@ export class HTTPTransport {
 
 const transport = new HTTPTransport();
 
-// @ts-ignore
 export function fetchWithRetry(url: string, options = {}) {
-    // @ts-ignore
     const {tries = 1} = options;
-    // @ts-ignore
-    function onError(err: any) {
+    function onError(err: unknown): unknown {
         const triesLeft = tries - 1;
         if (!triesLeft) {
             throw err;
