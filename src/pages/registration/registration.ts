@@ -4,6 +4,8 @@ import {Input} from "../../shared/components/input/input.ts";
 import {Block} from "../../shared/utils/block.ts";
 import {regForm} from "../../shared/constants/auth_reg-data-form.ts";
 import {onBlur} from "../../shared/utils/validation.ts";
+import {tmpl} from "./registration.tmpl.ts";
+import {getRegFormValues} from "../../shared/utils/get-form-values.ts";
 
 export class Registration extends Block {
 
@@ -15,7 +17,7 @@ export class Registration extends Block {
         this.children.button = new Button({
             label: 'Signup',
             cssClassName: 'btn',
-            events: { click: () => console.log('test') }
+            events: { click: () => getRegFormValues() }
         });
 
         this.props.inputs = regForm;
@@ -36,18 +38,6 @@ export class Registration extends Block {
     }
 
     render() {
-        return this.compile(
-            `<main class="auth-reg reg-form">
-        <h2>{{title}}</h2>
-        <form>
-            <div class="input-wrapper">
-            <div class="input-container">
-                {{{inputs}}}
-                </div>
-            </div>
-            {{{button}}}
-        </form>
-        <a href="/" class="to-auth">Login</a>
-     </main>`, this.props)
+        return this.compile(tmpl, this.props)
     }
 }
