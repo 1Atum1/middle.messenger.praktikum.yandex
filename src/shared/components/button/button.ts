@@ -9,10 +9,9 @@ export interface IButton {
     }
 }
 
-export class Button extends Block{
-    constructor(props: IButton) {
+export class Button extends Block {
+    constructor(props: any) {
         // Создаём враппер дом-элемент button
-        // @ts-ignore
         super("button", props);
     }
 

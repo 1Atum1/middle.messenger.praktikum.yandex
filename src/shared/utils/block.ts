@@ -1,6 +1,8 @@
 import { EventBus } from "./event-bus.ts";
 import {nanoid} from "nanoid";
 import Handlebars from "handlebars";
+// import {Input} from "../components/input/input.ts";
+// import {Button} from "../components/button/button.ts";
 
 export class Block {
     static EVENTS = {
@@ -12,10 +14,10 @@ export class Block {
 
     public id =  nanoid(6)
 
-    _element = null;
-    _meta = null;
+    _element = null as unknown as HTMLElement;
+    _meta = null as unknown;
     protected props: any;
-    public children: Record<string, Block>
+    public children: Record<string, Block | Block[]>
     private eventBus: () => EventBus;
 
     /** JSDoc
@@ -23,7 +25,7 @@ export class Block {
      * @param propsWithChildren
      * @param tagNameClass
      */
-    constructor(tagName: string = "div", propsWithChildren: { [s: string]: unknown; } | ArrayLike<unknown>, tagNameClass = '', ) {
+    constructor(tagName: string = "div", propsWithChildren: any, tagNameClass = '', ) {
         const eventBus = new EventBus();
         const { props, children } = this._getChildrenAndProps(propsWithChildren)
         this._meta = {
@@ -33,19 +35,20 @@ export class Block {
         };
 
         this.children = children
-        this.props = this._makePropsProxy(props);
+        if (props) {
+            this.props = this._makePropsProxy(props);
+        }
 
         this.eventBus = () => eventBus;
-
-        this._init()
-
         this._registerEvents(eventBus);
+        this._init()
         eventBus.emit(Block.EVENTS.INIT);
     }
 
     _getChildrenAndProps(childrenAndProps: any) {
-        let props: Record<string, unknown> = {};
-        let children: Record<string, Block> = {};
+        // console.log(childrenAndProps);
+        let props: Record<string, unknown> = {}; // Инициализируем props как пустой объект
+        let children: Record<string, Block | Block[]> = {}; // Инициализируем children как пустой объект
 
         Object.entries(childrenAndProps).forEach(([key, value]) => {
             if (value instanceof Block) {
@@ -53,9 +56,9 @@ export class Block {
             } else {
                 props[key] = value;
             }
-        })
+        });
 
-        return { props: props, children }
+        return { props, children };
     }
 
     _addEvents() {
@@ -69,13 +72,14 @@ export class Block {
                         myElement = child
                     }
                 }
+                // @ts-ignore
                 myElement?.addEventListener(eName, events[eName]);
             })
         }
 
     }
 
-    _registerEvents(eventBus: { on: (arg0: string, arg1: { (): void; (): void; (oldProps: any, newProps: any): void; (): void; }) => void; }) {
+    _registerEvents(eventBus: any) {
         eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
@@ -83,14 +87,15 @@ export class Block {
     }
 
     _createResources() {
-        const { tagName, props } = this._meta;
+        // @ts-ignore
+        const { tagName } = this._meta;
         this._element = this._createDocumentElement(tagName);
     }
 
     _init() {
         this._createResources();
         this.init();
-        this._render();
+        this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
 
     init() {
@@ -103,9 +108,24 @@ export class Block {
 // Может переопределять пользователь, необязательно трогать
     componentDidMount() {}
 
-    dispatchComponentDidMount() {
+    public dispatchComponentDidMount() {
         this.eventBus().emit(Block.EVENTS.FLOW_CDM);
-        Object.values(this.children).forEach(v => v.dispatchComponentDidMount())
+
+        // Проверяем, является ли children объектом или массивом
+        if (Array.isArray(this.children)) {
+            this.children.forEach((child) => {
+                if (child instanceof Block) {
+                    child.dispatchComponentDidMount();
+                }
+            });
+        } else {
+            // Если children - объект, обрабатываем его как объект
+            Object.values(this.children).forEach((child) => {
+                if (child instanceof Block) {
+                    child.dispatchComponentDidMount();
+                }
+            });
+        }
     }
 
     _componentDidUpdate() {
@@ -127,13 +147,13 @@ export class Block {
     };
 
     get element() {
-        return this._element;
+        return this._element as unknown as HTMLElement;
     }
 
     _render() {
         const block = this.render();
 
-        this._element!.innerHTML = '';
+        this._element.innerHTML = '';
         if (this.props.cssClassName) {
             this._element!.className += this.props.cssClassName
         }
@@ -143,13 +163,15 @@ export class Block {
     }
 
 // Может переопределять пользователь, необязательно трогать
-    render() {}
+    render(): DocumentFragment {
+        return {} as DocumentFragment
+    }
 
     getContent() {
         return this.element;
     }
 
-    _makePropsProxy(props) {
+    _makePropsProxy(props: any) {
         // Можно и так передать this
         // Такой способ больше не применяется с приходом ES6+
         const self = this;
@@ -172,45 +194,66 @@ export class Block {
         return props;
     }
 
-    _createDocumentElement(tagName) {
+    _createDocumentElement(tagName: any) {
         // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
         return document.createElement(tagName);
     }
 
     protected compile(template: string, context: any) {
-
         const contextAndStubs = { ...context };
 
-        Object.entries(this.children).forEach(([name, component]) => {
-            contextAndStubs[name] = `<div data-id="${component.id}"></div>`
-        })
+        // Обработка дочерних компонентов
+        for (const [name, components] of Object.entries(this.children)) {
+            if (Array.isArray(components)) {
+                // Если components - это массив, создаем массив стабов
+                const componentStubs = components.map((component) => {
+                    return `<div data-id="${component.id}"></div>`;
+                });
 
-        const html = Handlebars.compile(template)(contextAndStubs);
-        const temp = document.createElement('template')
-
-        temp.innerHTML = html;
-
-        Object.entries(this.children).forEach(([_, component]) => {
-            const stab = temp.content.querySelector(`[data-id="${component.id}"]`);
-
-            if (!stab) {
-                return;
+                contextAndStubs[name] = componentStubs.join(''); // Объединяем в одну строку
+            } else {
+                // Если components - это объект, создаем стаб для объекта
+                contextAndStubs[name] = `<div data-id="${components.id}"></div>`;
             }
+        }
 
-            if (component instanceof Block) {
-                component.getContent()?.append(...Array.from(stab.childNodes))
-                stab.replaceWith(component.getContent()!);
+        const compiledTemplate = Handlebars.compile(template)(contextAndStubs);
+
+        // Создаем и заполняем временный элемент
+        const temp = document.createElement('template');
+        temp.innerHTML = compiledTemplate;
+
+        // Заменяем стабы на компоненты
+        for (const [_, components] of Object.entries(this.children)) {
+            if (Array.isArray(components)) {
+                components.forEach((component) => {
+                    const stabs = temp.content.querySelectorAll(`[data-id="${component.id}"]`);
+                    stabs.forEach((stab) => {
+                        const contentNodes = Array.from(stab.childNodes);
+                        component.getContent()?.append(...contentNodes);
+                        stab.replaceWith(component.getContent()!);
+                    });
+                });
+            } else {
+                const component = components as Block;
+                const stab = temp.content.querySelector(`[data-id="${component.id}"]`);
+                if (stab) {
+                    const contentNodes = Array.from(stab.childNodes);
+                    component.getContent()?.append(...contentNodes);
+                    stab.replaceWith(component.getContent()!);
+                }
             }
-        })
+        }
 
         return temp.content;
     }
 
+
     show() {
-        this.element!.style.display = 'block';
+        this.element.style.display = 'block';
     }
 
     hide() {
-        this.element!.style.display = 'none';
+        this.element.style.display = 'none';
     }
 }

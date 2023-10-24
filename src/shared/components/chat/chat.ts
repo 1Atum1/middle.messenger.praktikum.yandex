@@ -1,6 +1,11 @@
 import {tmpl} from "./chat.tmpl.ts";
 import {Block} from "../../utils/block.ts";
 import {Input} from "../input/input.ts";
+import {onBlur} from "../../utils/validation.ts";
+
+export const chatMessages = [
+    {inputText: '', nameAttr: 'message', type: 'text', placeholder: '..you will type here', required: false,}
+]
 
 export class Chat extends Block {
 
@@ -9,12 +14,20 @@ export class Chat extends Block {
     }
 
     init() {
-        this.children.input = new Input({
-            nameAttr: 'message',
-            type: 'text',
-            placeholder: '..you will type here',
-            cssClassName: 'for-message'
+        this.props.inputs = chatMessages;
+        this.children.inputs = this.props.inputs.map((v: any, index: number) => {
+            return new Input({
+                inputText: v.inputText,
+                placeholder: v.placeholder,
+                type: v.type,
+                nameAttr: v.nameAttr,
+                errors: '',
+                required: v.required,
+                events: { 'blur': (event: any) => {
+                        return onBlur(v, event, index, this)}
+                }
         })
+    })
     }
     // nameAttr="message" type="text" placeholder="..you will type here" class="for-message"
     render() {

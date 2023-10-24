@@ -5,4 +5,5 @@ export interface inputForm {
     nameAttr: string;
     disabled?: boolean;
     tagName?: string;
+    required?: boolean;
 }

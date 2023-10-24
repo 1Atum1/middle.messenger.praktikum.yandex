@@ -1,5 +1,5 @@
 export class EventBus {
-    private listeners;
+    private listeners: Record<string, any>;
     constructor() {
         this.listeners = {};
     }
@@ -18,11 +18,11 @@ export class EventBus {
         }
 
         this.listeners[event] = this.listeners[event].filter(
-            listener => listener !== callback
+            (listener: any) => listener !== callback
         );
     }
 
-    emit(event: string, ...args: undefined[]) {
+    emit(event: string, ...args: any[]) {
         if (!this.listeners[event]) {
             throw new Error(`Нет события: ${event}`);
         }

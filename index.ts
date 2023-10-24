@@ -10,7 +10,9 @@ import './src/shared/styles/auth-reg.scss'
 import './src/shared/styles/profile.scss'
 import './src/pages/chat-list/chat-list.scss'
 import './style.scss'
+import {Block} from "./src/shared/utils/block";
 
+// @ts-ignore
 const ROUTES: Record<string, string> = {
     '/': new Authorization(),
     '/authorization': new Authorization(),
@@ -23,12 +25,14 @@ const ROUTES: Record<string, string> = {
     '/unavailable': Unavailable()({})
 }
 
+// @ts-ignore
 window.addEventListener('DOMContentLoaded', () => {
+    // @ts-ignore
     const root = document.getElementById('app');
-
-    if (root) {
-        const component = ROUTES[window.location.pathname];
-        root.append(component.element!);
-        component.dispatchComponentDidMount();
-    }
+    // @ts-ignore
+    const component = ROUTES[window.location.pathname];
+    root.append(component.element!);
+    component.eventBus().emit(Block.EVENTS.FLOW_CDM);
+    component.dispatchComponentDidMount()
 })
+
