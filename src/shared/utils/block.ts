@@ -18,7 +18,7 @@ export class Block {
     _meta = null as unknown;
     protected props: Record<string, unknown>;
     public children: Record<string, Block | Block[]>
-    private eventBus: () => EventBus;
+    eventBus: () => EventBus;
 
     /** JSDoc
      * @param {string} tagName

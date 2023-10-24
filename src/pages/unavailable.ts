@@ -1,8 +1,13 @@
-import Handlebars from "handlebars";
+import {Block} from "../shared/utils/block.ts";
 
-export const Unavailable = () => {
-    return Handlebars.compile(
-        `<h1>500</h1>
-         <p>server unavailable</p>`
-    )
+export class Unavailable extends Block {
+
+    constructor() {
+        super('', {});
+    }
+
+    render(): DocumentFragment {
+        return this.compile(`<h1>500</h1>
+         <p>server unavailable</p>`, this.props)
+    }
 }
