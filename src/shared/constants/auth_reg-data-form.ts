@@ -1,11 +1,11 @@
 
-import {inputForm} from "./input-form.interface.ts";
-export const authForm: inputForm[] = [
+import {IInput} from "../interfaces/input.interface.ts";
+export const authForm: IInput[] = [
     { inputText: 'Login', placeholder: 'Enter login', type: 'text', nameAttr: 'login', required: true },
     { inputText: 'Password', placeholder: 'Enter password', type: 'password', nameAttr: 'password', required: true },
 ]
 
-export const regForm: inputForm[] = [
+export const regForm: IInput[] = [
     { inputText: 'eMail', placeholder: 'Enter eMail', type: 'text', nameAttr: 'email', required: true},
     { inputText: 'Login', placeholder: 'Enter login', type: 'text', nameAttr: 'login', required: true },
     { inputText: 'Name', placeholder: 'Enter your name', type: 'text', nameAttr: 'first_name', required: true },

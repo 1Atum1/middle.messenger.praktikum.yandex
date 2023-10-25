@@ -1,8 +1,10 @@
-export function onBlur (v: any, event: any, index: number, parent: any) {
-    const errorsNode = event.target.parentNode.querySelector('.errors') as HTMLElement;
-    let regex: RegExp;
+import {IInput} from "../interfaces/input.interface.ts";
 
-    v.errors = !event.target.value && v.required ? "It's required!!!" : ""
+export function onBlur (v: IInput, event: Event, index: number, parent: unknown) {
+    const errorsNode = (event.target as Element).parentNode!.querySelector('.errors') as HTMLElement;
+    let regex: RegExp = /^.*\S.*$/; // не пустое
+
+    v.errors = !(event.target as HTMLInputElement).value && v.required ? "It's required!!!" : ""
     if (v.nameAttr === 'login') {
         regex = /^[A-Za-z][A-Za-z0-9_-]{2,19}$/;
         // if (regex.test(event.target.value)) {
@@ -33,8 +35,8 @@ export function onBlur (v: any, event: any, index: number, parent: any) {
         regex = /^.*\S.*$/;
     }
 
-    // @ts-ignore
-    if (regex.test(event.target.value)) {
+
+    if (regex.test((event.target as HTMLInputElement).value)) {
         errorsNode.textContent = '';
     } else {
         errorsNode.textContent = `${v.errors} Erorrs.`;

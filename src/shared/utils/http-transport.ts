@@ -9,6 +9,8 @@ export interface Options {
     headers: unknown;
     data: unknown;
     timeout: number;
+    method: string;
+    tries: number;
 }
 
 /**
@@ -16,24 +18,24 @@ export interface Options {
  * На входе: объект. Пример: {a: 1, b: 2, c: {d: 123}, k: [1, 2, 3]}
  * На выходе: строка. Пример: ?a=1&b=2&c=[object Object]&k=1,2,3
  */
-function queryStringify(data: unknown) {
+function queryStringify(data: Record<string, unknown>) {
     // Можно делать трансформацию GET-параметров в отдельной функции
     let result = '';
-    const arrToStr = (arr: string[]) => {
+    const arrToStr = (arr: unknown) => {
         let result = '';
-        arr.forEach((v, index) => {
-            result += `${v}${index === arr.length - 1 ? '' : ','}`
+        (arr as Array<unknown>).forEach((v, index) => {
+            result += `${v}${index === (arr as Array<unknown>).length - 1 ? '' : ','}`
         })
         return result;
     };
     if (!data) {
         return '';
     }
-    Object.keys(data).forEach((key, index) => {
+    Object.keys(data).forEach((key: string, index: number) => {
         if (index === 0) {
             result += '?'
         }
-        result += `${key}=${Array.isArray((data as any)[key]) ? arrToStr((data as any)[key]) : String((data as any)[key])}${index === Object.keys(data).length - 1 ? '' : '&'}`;
+        result += `${key}=${Array.isArray(data[key]) ? arrToStr(data[key]) : String(data[key])}${index === Object.keys(data).length - 1 ? '' : '&'}`;
     });
 
 
@@ -66,7 +68,7 @@ export class HTTPTransport {
     // options:
     // headers — obj
     // data — obj
-    request = (url: string, options: any, timeout: number = 5000) => {
+    request = (url: string, options: Options, timeout: number = 5000) => {
         const {method, data} = options;
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
@@ -84,7 +86,7 @@ export class HTTPTransport {
             if (method === METHODS.GET || !data) {
                 xhr.send();
             } else {
-                xhr.send(data);
+                xhr.send(JSON.stringify(data));
             }
             setTimeout(() => {
               reject("Some error")
@@ -97,12 +99,11 @@ export class HTTPTransport {
 
 const transport = new HTTPTransport();
 
-// @ts-ignore
-export function fetchWithRetry(url: string, options = {}) {
-    // @ts-ignore
+export function fetchWithRetry(url: string, options = {} as Options) {
+
     const {tries = 1} = options;
-    // @ts-ignore
-    function onError(err: any) {
+
+    function onError(err: Error): unknown {
         const triesLeft = tries - 1;
         if (!triesLeft) {
             throw err;
@@ -111,5 +112,5 @@ export function fetchWithRetry(url: string, options = {}) {
         return fetchWithRetry(url, {...options, tries: triesLeft})
     }
 
-    return transport.request(url, options).catch(onError)
+    return transport.request(url, options as Options).catch(onError)
 }

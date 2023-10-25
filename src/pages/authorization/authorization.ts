@@ -4,6 +4,7 @@ import {Block} from "../../shared/utils/block.ts";
 import {authForm} from "../../shared/constants/auth_reg-data-form.ts";
 import {onBlur} from "../../shared/utils/validation.ts";
 import {getAuthFormValues} from "../../shared/utils/get-form-values.ts";
+import {IInput} from "../../shared/interfaces/input.interface.ts";
 
 export class Authorization extends Block {
 
@@ -19,7 +20,7 @@ export class Authorization extends Block {
         });
 
         this.props.inputs = authForm;
-        this.children.inputs = this.props.inputs.map((v: any, index: number) => {
+        this.children.inputs = (this.props.inputs as Array<IInput>).map((v: IInput, index: number) => {
                 return new Input({
                     inputText: v.inputText,
                     placeholder: v.placeholder,
@@ -27,7 +28,7 @@ export class Authorization extends Block {
                     nameAttr: v.nameAttr,
                     errors: '',
                     required: v.required,
-                    events: { 'blur': (event: any) => {
+                    events: { 'blur': (event: Event) => {
                             return onBlur(v, event, index, this)}
                     }
                 })

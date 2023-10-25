@@ -12,8 +12,7 @@ import './src/pages/chat-list/chat-list.scss'
 import './style.scss'
 import {Block} from "./src/shared/utils/block";
 
-// @ts-ignore
-const ROUTES: Record<string, string> = {
+const ROUTES: Record<string, Block> = {
     '/': new Authorization(),
     '/authorization': new Authorization(),
     '/registration': new Registration(),
@@ -21,18 +20,19 @@ const ROUTES: Record<string, string> = {
     '/profile/edit': new EditProfile(),
     '/change-password': new ChangePassword(),
     '/chat': new ChatList(),
-    '/not-found': NotFound()({}),
+    '/not-found': new NotFound(),
     '/unavailable': Unavailable()({})
 }
 
-// @ts-ignore
 window.addEventListener('DOMContentLoaded', () => {
-    // @ts-ignore
     const root = document.getElementById('app');
-    // @ts-ignore
     const component = ROUTES[window.location.pathname];
-    root.append(component.element!);
-    component.eventBus().emit(Block.EVENTS.FLOW_CDM);
-    component.dispatchComponentDidMount()
+
+    if (root) {
+        root.append(component.element!);
+        component.eventBus().emit(Block.EVENTS.FLOW_CDM);
+        component.dispatchComponentDidMount()
+    }
+
 })
 
